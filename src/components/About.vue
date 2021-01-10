@@ -1,10 +1,6 @@
 <template>
   <h1 class="msg">{{ showMsg }}</h1>
-  <button @click="count++">count is: {{ count }}</button>
-  <p>
-    Edit <code @click="setMsg">components/HelloWorld.vue</code> to test hot
-    module replacement.
-  </p>
+    <van-button @click="handleRouterToHelloWord" type="primary">跳转至HelloWord页面</van-button>
 </template>
 <script lang="ts">
 import { defineComponent, onMounted, Ref, ref, toRefs } from "vue";
@@ -29,16 +25,14 @@ export default defineComponent({
 
     const { msg } = toRefs(props);
     const showMsg: Ref<string> = ref(msg.value);
-    const setMsg = (): void => {
-      showMsg.value = "？？？？？？？？？？？？？？？";
-    };
-    onMounted(() => {
-      console.log($route.path);
-      getUser();
-    });
+
+    const handleRouterToHelloWord = () => {
+        $router.push('/hello')
+    }
+
     return {
       showMsg,
-      setMsg,
+      handleRouterToHelloWord
     };
   },
 });

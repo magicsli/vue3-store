@@ -1,4 +1,4 @@
-import qs from "qs";
+import * as qs from "qs";
 // const qs = require('qs')
 interface fetchData {
   url: string;
