@@ -1,14 +1,15 @@
 import {createRouter,  createWebHistory} from 'vue-router'
-export const router = createRouter({
+import beforeEach from "./beforeEach"
+const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
       path: '/login',
-      component: () => import('/@/page/login')
+      component: () => import('/@/page/login.vue')
     },
     {
       path: '/tabbar',
-      component: () => import('/@/page/home/index')
+      component: () => import('/@/page/home/index.vue')
     },
     {
       path: '/',
@@ -16,5 +17,5 @@ export const router = createRouter({
     }
   ]
 })
-
+beforeEach(router)
 export default router

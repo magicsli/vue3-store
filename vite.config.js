@@ -1,6 +1,6 @@
 import path from "path";
 module.exports = {
-  port: 4000,
+  port: 5200,
   open: true,
   module: "common",
   alias: {
@@ -12,7 +12,7 @@ module.exports = {
   proxy: {
     "/apis": {
       target:
-        "https://www.fastmock.site/mock/240ac3764aa8ee3963b796cfdc668a88/test",
+        "http://localhost:4000",
       changeOrigin: true,
       rewrite: (path) => path.replace(/^\/apis/, ""),
     },

@@ -7,10 +7,11 @@ interface fetchData {
 }
 
 export default ({ url, data = {}, method = "GET" }: fetchData) =>
-  fetch(url, {
+  fetch("/apis" + url, {
     method: method.toUpperCase(), // or 'PUT'
-    [method.toUpperCase() == "GET" ? "params" : "body"]: qs.stringify(data), // data can be `string` or {object}!
+    [method.toUpperCase() == "GET" ? "params" : "body"]: JSON.stringify(data), // data can be `string` or {object}!
     headers: new Headers({
       "Content-Type": "application/json",
+      Authorization: localStorage.getItem("token"),
     }),
   }).then((res) => res.json());
