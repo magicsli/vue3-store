@@ -1,37 +1,56 @@
 <template>
   <div class="root">
-    这是login页面
+    这是register页面
 
     <div class="form-box">
-      <van-form ref="userfrom" @submit="onSubmit">
+      <van-form ref="userfrom" label-width="4em">
         <van-field
-          label-width="4em"
           v-model="user.username"
           label="用户名"
           name="用户名"
           :rules="[{ required: true, message: '请填写用户名' }]"
         />
         <van-field
-          label-width="4em"
           v-model="user.password"
-          :type="look ? 'password' : 'text'"
+          type="password"
           label="密码"
           name="密码"
-          :right-icon="look ? 'closed-eye' : 'eye-o'"
+          right-icon="closed-eye"
           :rules="[{ required: true, message: '请填写密码' }]"
-          @click-right-icon.stop="look = !look"
         />
+        <van-field
+          v-model="user.confirmPassword"
+          type="password"
+          label="确认密码"
+          name="确认密码"
+          right-icon="closed-eye"
+          :rules="[
+            {
+              required: true,
+              validator: handleConfirmPassword,
+              message: '请确认密码',
+            },
+          ]"
+        />
+        <van-field name="radio" label="用户类型">
+          <template #input>
+            <van-radio-group v-model="user.type" direction="horizontal">
+              <van-radio name="1">达人</van-radio>
+              <van-radio name="2">老板</van-radio>
+            </van-radio-group>
+          </template>
+        </van-field>
       </van-form>
       <van-button
         @click="onSubmit"
         round
         block
         native-type="submit"
-        class="login"
+        class="register"
         type="primary"
-        >登录
+        >注册
       </van-button>
-      <router-link class="register" to="/register">注册</router-link>
+      <router-link class="login" to="/login">登录</router-link>
     </div>
   </div>
 </template>
@@ -44,25 +63,30 @@ export default defineComponent({
     const router = useRouter();
     const route = useRoute();
 
-    const look = ref(true);
     const userfrom = ref(null);
     const user = reactive({
       username: "",
       password: "",
+      confirmPassword: "",
+      type: "1",
     });
     const onSubmit = () => {
       userfrom.value.validate().then((res) => {
-        login(user).then((res) => {
-          router.push("/");
+        register(user).then((res) => {
+          if (res && res.code === 0) {
+            router.push("/tabbar");
+          }
         });
       });
     };
-    onMounted(() => {});
+    const handleConfirmPassword = (vlaue) => {
+      return user.password && vlaue === user.password;
+    };
     return {
       onSubmit,
       userfrom,
       user,
-      look,
+      handleConfirmPassword,
     };
   },
 });
@@ -72,12 +96,12 @@ export default defineComponent({
 .form-box {
   padding: 40px;
 }
-.login {
+.register {
   // transition: all 0.3s;
   margin: 20px auto 5px;
   width: 80%;
 }
-.register {
+.login {
   color: #409eff;
   font-size: 12px;
   text-align: right;

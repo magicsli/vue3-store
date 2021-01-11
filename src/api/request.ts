@@ -1,4 +1,6 @@
 import * as qs from "qs";
+import { Toast } from "vant";
+import { useRouter } from "vue-router";
 // const qs = require('qs')
 interface fetchData {
   url: string;
@@ -14,4 +16,21 @@ export default ({ url, data = {}, method = "GET" }: fetchData) =>
       "Content-Type": "application/json",
       Authorization: localStorage.getItem("token"),
     }),
-  }).then((res) => res.json());
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.code === 1) {
+        Toast.fail(res.msg);
+        return Promise.reject(res);
+      } else if (res.code === 401) {
+        Toast.fail(res.msg);
+        localStorage.removeItem("token");
+        useRouter().push("/login");
+        return Promise.reject(res);
+      } else {
+        if (res && res.token) {
+          localStorage.setItem("token", res.token);
+        }
+        return Promise.resolve(res);
+      }
+    });
