@@ -1,6 +1,6 @@
 // import { getters, actions } from '/@modules/vuex'
 import { Toast } from "vant";
-const token = localStorage.getItem("token");
+
 
 const whiteList = ["login", "register", "active"];
 
@@ -27,14 +27,23 @@ export default (router) => {
    */
 
   router.beforeEach((to, from, next) => {
+    const token = localStorage.getItem("token");
     if (!token && !filterRouteName(to.name, whiteList)) {
       // 如果没有token并且不在白名单中， 强制跳转至login页面
+      const toStr = encodeURIComponent(to.fullpath)
+
       Toast.fail({
         message: "登录超时/登录过期",
         position: "top",
         duration: 3000,
       });
-      next("/login");
+      console.log(toStr)
+      next({
+        name: 'login',
+        query: {
+          jump: toStr
+        }
+      });
     } else {
       next();
     }

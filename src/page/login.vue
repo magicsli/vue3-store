@@ -53,7 +53,8 @@ export default defineComponent({
     const onSubmit = () => {
       userfrom.value.validate().then((res) => {
         login(user).then((res) => {
-          router.push("/");
+          const jump: string = decodeURIComponent(route.query.jump + "");
+          router.push(route.query.jump ? jump : "/");
         });
       });
     };
