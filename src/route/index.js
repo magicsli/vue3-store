@@ -16,13 +16,36 @@ const router = createRouter({
       component: () => import("/@/page/register.vue"),
     },
     {
-      path: "/tabbar",
+      path: "/",
       name: "tabbar",
+      redirect: '/home',
       component: () => import("/@/page/home/index.vue"),
+      children: [
+        {
+          path: "/home",
+          name: 'home',
+          component: () => import("/@/page/home/component/home.vue")
+        },
+        {
+          path: "/list",
+          name: 'list',
+          component: () => import("/@/page/home/component/list.vue")
+        },
+        {
+          path: "/cart",
+          name: 'cart',
+          component: () => import("/@/page/home/component/cart.vue")
+        },
+        {
+          path: "/user",
+          name: 'user',
+          component: () => import("/@/page/home/component/user.vue")
+        },
+      ]
     },
     {
-      path: "/",
-      redirect: "/tabbar",
+      path: "/:pathMatch(.*)*",
+      redirect: "/",
     },
   ],
 });

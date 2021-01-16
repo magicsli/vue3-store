@@ -1,6 +1,6 @@
 // import { getters, actions } from '/@modules/vuex'
 import { Toast } from "vant";
-
+import store from "/@/store/index";
 
 const whiteList = ["login", "register", "active"];
 
@@ -28,24 +28,45 @@ export default (router) => {
 
   router.beforeEach((to, from, next) => {
     const token = localStorage.getItem("token");
-    if (!token && !filterRouteName(to.name, whiteList)) {
-      // 如果没有token并且不在白名单中， 强制跳转至login页面
-      const toStr = encodeURIComponent(to.fullpath)
-
-      Toast.fail({
-        message: "登录超时/登录过期",
-        position: "top",
-        duration: 3000,
-      });
-      console.log(toStr)
-      next({
-        name: 'login',
-        query: {
-          jump: toStr
-        }
-      });
+    if (!token) {
+      if (!filterRouteName(to.name, whiteList)) {
+        // 如果没有token并且不在白名单中， 强制跳转至login页面
+        const toStr = encodeURIComponent(to.fullpath);
+        Toast.fail({
+          message: "登录超时/登录过期",
+          position: "top",
+          duration: 3000,
+        });
+        console.log(toStr);
+        next({
+          name: "login",
+          query: {
+            jump: toStr,
+          },
+        });
+      } else {
+        // 没有token， 但是在白名单之中， 允许通过
+        next();
+      }
     } else {
-      next();
+      // 用户有token(已经登录)
+      const userInfo = store.getters.userInfo;
+      if (userInfo.username && userInfo.type) {
+        // 已经成功获取到用户的信息
+        next();
+      } else {
+        // 未找到用户信息， 重新获取
+        store
+          .dispatch("getUserInfo")
+          .then((res) => {
+            next();
+          })
+          .catch((err) => {
+            next({
+              name: "login",
+            });
+          });
+      }
     }
   });
 };
