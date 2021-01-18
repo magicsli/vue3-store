@@ -24,7 +24,6 @@ export default defineComponent({
     const active = ref(route.path);
 
     const handleTab = (e) => {
-      console.log(store.getters, "xx");
       router.replace(e);
     };
     return {

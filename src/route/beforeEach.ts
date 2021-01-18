@@ -58,10 +58,10 @@ export default (router) => {
         // 未找到用户信息， 重新获取
         store
           .dispatch("getUserInfo")
-          .then((res) => {
+          .then(() => {
             next();
           })
-          .catch((err) => {
+          .catch(() => {
             next({
               name: "login",
             });
