@@ -1,5 +1,5 @@
 <template>
-  <div class="root">
+  <div class="root tac">
     这是login页面
 
     <div class="form-box">

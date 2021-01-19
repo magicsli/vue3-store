@@ -31,13 +31,12 @@ export default (router) => {
     if (!token) {
       if (!filterRouteName(to.name, whiteList)) {
         // 如果没有token并且不在白名单中， 强制跳转至login页面
-        const toStr = encodeURIComponent(to.fullpath);
+        const toStr = encodeURIComponent(to.fullPath);
         Toast.fail({
           message: "登录超时/登录过期",
           position: "top",
           duration: 3000,
         });
-        console.log(toStr);
         next({
           name: "login",
           query: {
