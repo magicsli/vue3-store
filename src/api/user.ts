@@ -24,3 +24,11 @@ export const register = (data: types.registerData) =>
     method: "post",
     data,
   });
+
+// 获取消息列表
+export const getMsgList = (data = {}) =>
+  Fetch({
+    url: "/msglist",
+    method: "get",
+    data,
+  });

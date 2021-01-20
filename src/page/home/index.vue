@@ -1,6 +1,11 @@
 <template>
   <div class="root">
-    <router-view :active="active"></router-view>
+    <router-view :active="active" v-slot="{ Component }">
+      <transition name="van-slide-left">
+        <component :is="Component" />
+      </transition>
+    </router-view>
+
     <van-tabbar v-model="active" @change="handleTab">
       <van-tabbar-item name="/home" icon="wap-home-o">首页</van-tabbar-item>
       <van-tabbar-item name="/list" icon="search">列表</van-tabbar-item>
