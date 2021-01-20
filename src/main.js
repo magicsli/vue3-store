@@ -5,6 +5,7 @@ import './index.css'
 import Vant from 'vant';
 import '/@modules/vant/lib/index.css';
 import "/@/assets/css/base.scss"
+import 'lib-flexible/flexible'
 import VueRouter from '/@/route'
 import store from '/@/store'
 
