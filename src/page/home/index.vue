@@ -19,11 +19,9 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { useStore } from "vuex";
 import { useRoute, useRouter } from "vue-router";
 export default defineComponent({
   setup() {
-    const store = useStore();
     const route = useRoute();
     const router = useRouter();
     const active = ref(route.path);

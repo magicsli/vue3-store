@@ -2,7 +2,7 @@ import path from "path";
 module.exports = {
   port: 5200,
   open: true,
-  module: "common",
+  module: ["common", "es6"],
   alias: {
     "/@/": path.resolve(__dirname, "src/"),
   },
@@ -11,8 +11,7 @@ module.exports = {
   },
   proxy: {
     "/apis": {
-      target:
-        "http://localhost:4000",
+      target: "http://localhost:4000",
       changeOrigin: true,
       rewrite: (path) => path.replace(/^\/apis/, ""),
     },
