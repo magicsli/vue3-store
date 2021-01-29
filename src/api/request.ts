@@ -1,6 +1,11 @@
 import * as qs from "qs";
 import { Toast } from "vant";
 import { useRouter } from "vue-router";
+const baserURl =
+  import.meta.env.VITE_API_URL === undefined
+    ? "/apis"
+    : import.meta.env.VITE_API_URL;
+
 // const qs = require('qs')
 interface fetchData {
   url: string;
@@ -9,7 +14,7 @@ interface fetchData {
 }
 
 export default ({ url, data = {}, method = "GET" }: fetchData) =>
-  fetch("/apis" + url, {
+  fetch(baserURl + url, {
     method: method.toUpperCase(), // or 'PUT'
     [method.toUpperCase() == "GET" ? "params" : "body"]: JSON.stringify(data), // data can be `string` or {object}!
     headers: new Headers({
@@ -19,10 +24,10 @@ export default ({ url, data = {}, method = "GET" }: fetchData) =>
   })
     .then((res) => res.json())
     .then((res) => {
-      if (res.code === 1) {
+      if (res.code === "1") {
         Toast.fail(res.msg);
         return Promise.reject(res);
-      } else if (res.code === 401) {
+      } else if (res.code === "401") {
         Toast.fail(res.msg);
         localStorage.removeItem("token");
         useRouter().push("/login");

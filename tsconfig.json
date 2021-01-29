@@ -3,8 +3,10 @@
     "paths": {
       "/@/*": ["src/*"]
     },
-    "baseUrl": "./",
-    "lib": ["esnext", "dom", "dom.iterable", "scripthost"]
+    "baseUrl": ".",
+    "moduleResolution":"Node",
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost", "ES2020"],
+    "module": "esnext"
   },
   "include": [
     "src/**/*.ts",
@@ -12,7 +14,7 @@
     "src/**/*.vue",
     "src/types/images.d.ts",
     "tests/**/*.ts",
-    "tests/**/*.tsx"
-  ],
+    "tests/**/*.tsx", 
+    "src/route/index.js"  ],
   "exclude": ["node_modules"]
 }
