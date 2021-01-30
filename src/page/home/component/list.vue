@@ -9,18 +9,20 @@
         @load="msgState.onLoad"
       >
         <van-cell v-for="item in msgState.list" :key="item">
-          <div class="chat-item">
+          <div class="chat-item" @click="goAim(item.opposite.id)">
             <van-image
               class="chat-item-icon"
               fit="cover"
               src="/@/assets/img/test.jpg"
             />
             <div class="chat-item-info h100 flex f1 fdc jcsb">
-              <div class="name f14">浙江大佬</div>
-              <div class="last f12 c-gray">你说尼玛呢1</div>
+              <div class="name f14">{{ item.opposite.username }}</div>
+              <div class="last f12 c-gray">{{ item.content }}</div>
             </div>
             <div class="chat-item-status">
-              <div class="time c-gray f12">19:20</div>
+              <div class="time c-gray f12">
+                {{ parseTime(item.create_time, "{h}:{i}") }}
+              </div>
             </div>
           </div>
         </van-cell>
@@ -31,7 +33,8 @@
 
 <script lang="ts">
 import { defineComponent, reactive } from "vue";
-import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
+import { parseTime } from "/@/utils";
 import { getMsgList } from "/@/api/user";
 export default defineComponent({
   setup() {
@@ -47,8 +50,15 @@ export default defineComponent({
         msgState.finishe = true;
       },
     });
+
+    const router = useRouter();
+    // 跳转到
+    const goAim = (id: string) => router.push(`/chat?to=${id}`);
+
     return {
       msgState,
+      parseTime,
+      goAim,
     };
   },
 });

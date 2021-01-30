@@ -32,3 +32,11 @@ export const getMsgList = (data = {}) =>
     method: "get",
     data,
   });
+
+// 获取消息列表
+export const getMsgAimlist = (data = {}) =>
+  Fetch({
+    url: "/msgAimlist",
+    method: "post",
+    data,
+  });

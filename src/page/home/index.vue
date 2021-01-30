@@ -27,7 +27,6 @@ export default defineComponent({
     const active = ref(route.path);
 
     const handleTab = (e) => {
-      console.log(import.meta.env)
       router.replace(e);
     };
     return {

@@ -2,9 +2,7 @@ import * as qs from "qs";
 import { Toast } from "vant";
 import { useRouter } from "vue-router";
 const baserURl =
-  import.meta.env.VITE_API_URL === undefined
-    ? "/apis"
-    : import.meta.env.VITE_API_URL;
+  process.env.VITE_API_URL === undefined ? "/apis" : process.env.VITE_API_URL;
 
 // const qs = require('qs')
 interface fetchData {
