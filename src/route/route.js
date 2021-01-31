@@ -60,7 +60,7 @@ export const activityRouter = [
     path: "/chat",
     meta: {
       title: "聊天信息栏",
-      hiddenNavgation: false,
+      hiddenNavgation: true,
     },
     name: "chat",
     component: () => import("/@/page/chat.vue"),

@@ -1,8 +1,14 @@
 <template>
+
   <div class="chat-root flex fdc">
+      <van-nav-bar
+        :title="opposite.username || '...'"
+        left-text="返回"
+        left-arrow
+        @click-left="router.back()"
+      />
     <div class="chat-list f1" ref="listContainer">
       <van-list
-        v-model:loading="msgList.loading"
         direction="up"
         finished-text="没有更多了"
       >
@@ -55,12 +61,13 @@
 import { getMsgAimlist } from "/@/api/user";
 import { addSocketListener, addSocketSend } from "/@/api/socket";
 import { defineComponent, nextTick, onMounted, reactive, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
 export default defineComponent({
   setup(props) {
     const sms = ref("");
     const route = useRoute();
+    const router = useRouter();
     const store = useStore();
     const listContainer = ref(null);
     const userInfo = store.getters.userInfo;
@@ -124,6 +131,8 @@ export default defineComponent({
     return {
       sms,
       send,
+      route,
+      router,
       msgList,
       userInfo,
       opposite,
@@ -135,7 +144,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .chat-root {
-  height: calc(100vh - 50px);
+  height: calc(100vh);
   overflow: hidden;
 
   .chat-list {
