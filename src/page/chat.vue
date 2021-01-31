@@ -52,15 +52,14 @@
 </template>
 
 <script lang="ts">
-import { io } from "socket.io-client";
 import { getMsgAimlist } from "/@/api/user";
+import { addSocketListener, addSocketSend } from "/@/api/socket";
 import { defineComponent, nextTick, onMounted, reactive, ref } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 export default defineComponent({
   setup(props) {
     const sms = ref("");
-    const socket = io("ws://localhost:4000");
     const route = useRoute();
     const store = useStore();
     const listContainer = ref(null);
@@ -78,13 +77,6 @@ export default defineComponent({
       avatar: "",
     });
 
-    socket.on("receiveMsg", (res) => {
-      msgList.list.push(res);
-      nextTick(() => {
-        listContainer.value.scrollTop = listContainer.value.scrollHeight;
-      });
-    });
-
     onMounted(() => {
       msgList.loading = true;
       console.log(route.meta.title);
@@ -97,19 +89,37 @@ export default defineComponent({
           console.log(route.meta.title);
           opposite.value = res.data.opposite;
           msgList.list = res.data.chatMsgs;
+          addSocketListener("receiveMsg", (res) => {
+            if (
+              res.from === opposite.value.id ||
+              res.to === opposite.value.id
+            ) {
+              msgList.list.push(res);
+              nextTick(() => {
+                listContainer.value.scrollTop =
+                  listContainer.value.scrollHeight;
+              });
+            }
+          });
+
+          nextTick(() => {
+            listContainer.value.scrollTop = listContainer.value.scrollHeight;
+          });
         })
         .finally(() => {
           msgList.loading = false;
-          console.log();
         });
     });
 
-    const send = () => {
-      socket.emit("sendMsg", {
+    const send = async () => {
+      if (!sms.value) return;
+      await addSocketSend("sendMsg", {
         from: userInfo._id,
         to: opposite.value.id,
         content: sms.value,
       });
+
+      sms.value = "";
     };
     return {
       sms,

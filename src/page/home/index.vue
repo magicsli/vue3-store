@@ -1,7 +1,7 @@
 <template>
   <div class="root">
     <router-view :active="active" v-slot="{ Component }">
-      <transition name="van-slide-left">
+      <transition name="list">
         <component :is="Component" />
       </transition>
     </router-view>
@@ -37,4 +37,23 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.6s ease;
+}
+
+.list-enter-from {
+  position: fixed;
+  width: 100%;
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+.list-leave-to {
+  position: fixed;
+  width: 100%;
+  opacity: 0;
+  transform: translateX(100%);
+}
+</style>
