@@ -1,18 +1,20 @@
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 import store from "/@/store/index";
 
+let socket: Socket
 
-export let socket = null;
 // 接收消息
 export function initIo() {
     if (socket) return;
     socket = io('ws://localhost:4000')
+    // 短线重连, 并且重新绑定
+    socket.on('disconnect', function () {
+        initIo()
+    });
     bindUserSocketIo()
 }
 
 const bindUserSocketIo = () => {
-
-    console.log(store)
     socket.emit("bindUserSocket", { _id: store?.getters?.userInfo?._id })
 }
 
