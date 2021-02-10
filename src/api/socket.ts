@@ -7,7 +7,7 @@ let socket: Socket
 export function initIo() {
     if (socket) return;
     socket = io('ws://localhost:4000')
-    // 短线重连, 并且重新绑定
+    // 断线重连, 并且重新绑定
     socket.on('disconnect', function () {
         initIo()
     });
