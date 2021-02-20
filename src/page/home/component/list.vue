@@ -55,6 +55,60 @@ export default defineComponent({
     // 跳转到
     const goAim = (id: string) => router.push(`/chat?to=${id}`);
 
+    // demo
+
+    /**
+     * @param {number[]} A
+     * @param {number} K
+     * @return {number}
+     */
+    var longestOnes = function (A: number[], K: number) {
+      if (K === A.length) return K;
+      let changeList = A.reduce((count: Array<number>, item, index) => {
+        if (item === 0) {
+          return [index, ...count];
+        } else {
+          return count;
+        }
+      }, []);
+      if (K >= changeList.length) return A.length;
+      changeList.sort((a, b) => a - b);
+      let turnList = [];
+      for (let i = 0; i < changeList.length + 1 - K; i++) {
+        turnList.push({
+          startChangeIndex: i,
+          endChangeIndex: i + K - 1,
+        });
+      }
+      console.log(turnList.length);
+
+      return turnList.reduce((count, item, index) => {
+        let turnStart: number, turnEnd: number;
+        if (item.startChangeIndex === 0) {
+          turnStart = 0;
+        } else {
+          turnStart = changeList[item.startChangeIndex - 1] + 1;
+        }
+
+        if (item.endChangeIndex === changeList.length - 1) {
+          // console.log(A.length);
+          turnEnd = A.length;
+        } else {
+          turnEnd = changeList[item.endChangeIndex + 1];
+        }
+
+        return turnEnd - turnStart > count ? turnEnd - turnStart : count;
+      }, 0);
+    };
+
+    console.log(
+      "Result ==>",
+      longestOnes(
+        [0, 0, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1],
+        5
+      )
+    );
+
     return {
       msgState,
       parseTime,
