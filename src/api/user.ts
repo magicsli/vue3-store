@@ -40,3 +40,12 @@ export const getMsgAimlist = (data = {}) =>
     method: "post",
     data,
   });
+
+// 获取用户列表
+export const getUserlist = (data = {}) =>
+  Fetch({
+    url: "/userlist",
+    method: "get",
+    data,
+  });
+

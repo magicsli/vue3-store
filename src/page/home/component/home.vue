@@ -1,18 +1,29 @@
 <template>
   <div>
-    <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
-      <van-swipe-item>1</van-swipe-item>
-      <van-swipe-item>2</van-swipe-item>
-      <van-swipe-item>3</van-swipe-item>
-      <van-swipe-item>4</van-swipe-item>
-    </van-swipe>
+<van-list
+  v-model="loading"
+  finished-text="没有更多了"
+  @load="onLoad"
+>
+  <van-cell v-for="item in list" :key="item" :title="item" />
+</van-list>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, reactive } from "vue";
+import { getUserlist } from "/@/api/user";
 export default defineComponent({
   setup() {
+    const userList = reactive({
+      loading: false,
+      onLoad() {
+        getUserlist({ type: "1" }).then((res) => {
+          console.log(res);
+        });
+      }
+    })
+
     return {};
   },
 });

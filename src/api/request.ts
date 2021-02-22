@@ -11,15 +11,26 @@ interface fetchData {
   data?: Object;
 }
 
-export default ({ url, data = {}, method = "GET" }: fetchData) =>
-  fetch(baserURl + url, {
+export default ({ url, data = {}, method = "GET" }: fetchData) => {
+  const options = {
     method: method.toUpperCase(), // or 'PUT'
-    [method.toUpperCase() == "GET" ? "params" : "body"]: JSON.stringify(data), // data can be `string` or {object}!
     headers: new Headers({
       "Content-Type": "application/json",
       Authorization: localStorage.getItem("token"),
     }),
-  })
+  };
+
+  if (method.toUpperCase() == "GET") {
+    url += "?"
+    for (let k in data) {
+      url += `${k}=${data[k]}&`
+    }
+    url = url.slice(0, url.length - 1)
+  } else {
+    options["body"] = JSON.stringify(data); // data can be `string` or {object}!
+  }
+
+  return fetch(baserURl + url, options)
     .then((res) => res.json())
     .then((res) => {
       if (res.code === "1") {
@@ -37,3 +48,5 @@ export default ({ url, data = {}, method = "GET" }: fetchData) =>
         return Promise.resolve(res);
       }
     });
+}
+
